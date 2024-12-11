@@ -7,7 +7,7 @@ app.get('/contact', (req, res) => {
     res.send('The Contact Page');
 });
 app.get('/about', (req, res) => {
-res.send('Abut Page');
+res.send('The About Page');
 });
 app.get('*', (req, res) => {
     res.status(404).send('Not Found');
