@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const userRouter = require('./routes/user.route');
 
 require('dotenv').config();
 require('./libs/dbConnect');
@@ -25,3 +26,4 @@ const PORT = 3000;
 app.listen(PORT, () => {
 console.log(`Server running on port ${PORT}`);
 });
+app.use('/users', userRouter);
