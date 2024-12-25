@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const session = require('express-session');
 // const userRouter = require('./routes/user.route');
 const userRouter = require('./routes/user.route');
 const app = express();
@@ -29,3 +30,13 @@ app.listen(PORT, () => {
 console.log(`Server running on port ${PORT}`);
 });
 app.use('/users', userRouter);
+
+app.use(morgan('dev'));
+app.use(express.static('./public'));
+app.use(
+    session({
+    secret: process.env.AUTH_SECRET,
+    saveUninitialized: true,
+    resave: false,
+    })
+    );
