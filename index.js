@@ -40,3 +40,36 @@ app.use(
     resave: false,
     })
     );
+
+    const express = require('express');
+const morgan = require('morgan');
+const session = require('express-session');
+const userRouter = require('./routes/user.route');
+require('dotenv').config(); // Ensure this is at the top
+require('./libs/dbConnect');
+
+const app = express();
+
+app.set('views', './views');
+app.set('view engine', 'ejs');
+app.use(morgan('dev'));
+app.use(express.static('./public'));
+
+app.use(
+    session({
+        secret: process.env.AUTH_SECRET, // Use the secret from the .env file
+        saveUninitialized: true,
+        resave: false,
+    })
+);
+
+app.get('/', (req, res) => {
+    res.render('index', { message: 'Hello From Node.js' });
+});
+
+app.use('/users', userRouter);
+
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
