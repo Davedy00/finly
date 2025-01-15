@@ -1,14 +1,16 @@
-router.get('/', (req, res) => {
-    res.render('pages/index', { title: 'Finly' });
-    });
-    router.get('/login', (req, res) => {
-    res.render('pages/login', {
-    title: 'Sign in',
-    });
-    });
-    router.get('/signup', (req, res) => {
-    res.render('pages/signup', {
-    title: 'Sign up',
-    });
-    });
-    module.exports = router;
+// user.route.js
+const express = require('express');
+const router = express.Router();
+
+// POST route for creating a new user
+router.post('/create', (req, res) => {
+    // Logic to create a new user goes here
+    const newUser = req.body; // Assuming you send user data in the request body
+    // Add your user creation logic (e.g., save to database)
+
+    // Send a response back
+    res.status(201).json({ message: 'User created successfully!', user: newUser });
+});
+
+// Export the router
+module.exports = router;
