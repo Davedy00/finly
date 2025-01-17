@@ -1,4 +1,5 @@
 // index.js
+const userRouter = require('./routes/user.route');
 const express = require('express');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/user.route'); // Adjust the path if necessary
@@ -9,6 +10,10 @@ const PORT = 3000;
 // Middleware
 app.use(bodyParser.json()); // For parsing application/json
 app.use('/users', userRoutes); // Use user routes
+app.get('/', (req, res) => {
+    res.render('index', { message: 'Hello From Node.js' });
+    });
+    app.use('/users', userRouter);
 
 // Start the server
 app.listen(PORT, () => {
