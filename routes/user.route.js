@@ -2,6 +2,11 @@
 const express = require('express');
 const router = express.Router();
 
+// GET route for testing
+router.get('/create', (req, res) => {
+    res.send('This is the user creation page. Please use POST to create a user.');
+});
+
 // POST route for creating a new user
 router.post('/create', (req, res) => {
     // Logic to create a new user goes here
