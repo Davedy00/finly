@@ -1,21 +1,46 @@
-// index.js
-const userRouter = require('./routes/user.route');
 const express = require('express');
-const bodyParser = require('body-parser');
-const userRoutes = require('./routes/user.route'); // Adjust the path if necessary
+const morgan = require('morgan');
+const session = require('express-session');
+const flash = require('connect-flash');
+
+require('dotenv').config();
+require('./libs/dbConnect');
+
+const { verifyUser } = require('./libs/middleware');
+const userRouter = require('./routes/user.route');
+const dashboardRouter = require('./routes/dashboard.route');
 
 const app = express();
+
+app.set('views', './views');
+app.set('view engine', 'ejs');
+
+app.use(morgan('dev'));
+app.use(express.static('./public'));
+app.use(express.urlencoded({ extended: false }));
+
+app.use(
+  session({
+    secret: process.env.AUTH_SECRET,
+    saveUninitialized: true,
+    resave: false,
+  })
+);
+
+app.use(flash());
+
+app.use('/', userRouter);
+app.use('/dashboard', verifyUser, dashboardRouter);
+
+app.get('*', (req, res) => {
+  res.status(404).render('index', { 
+    title:'Not Found',
+    message: 'Not Found' 
+  });
+});
+
 const PORT = 3000;
 
-// Middleware
-app.use(bodyParser.json()); // For parsing application/json
-app.use('/users', userRoutes); // Use user routes
-app.get('/', (req, res) => {
-    res.render('index', { message: 'Hello From Node.js' });
-    });
-    app.use('/users', userRouter);
-
-// Start the server
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
